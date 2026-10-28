@@ -1,0 +1,35 @@
+name: Clinic Content CI
+
+on:
+  push:
+    branches: [ "main", "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate-clinic-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Environment
+        run: |
+          echo "Starting verification of Riverside Clinic content files..."
+          ls -la
+
+      - name: Custom Clinic Check - Verify Hours File
+        run: |
+          echo "Checking if hours.md exists and is populated..."
+          if [ ! -f "hours.md" ]; then
+            echo "ERROR: hours.md file is missing!"
+            exit 1
+          fi
+          
+          if [ ! -s "hours.md" ]; then
+            echo "ERROR: hours.md file is empty!"
+            exit 1
+          fi
+          
+          echo "SUCCESS: hours.md exists and contains data."
